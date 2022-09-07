@@ -1,28 +1,4 @@
-# coding=utf-8
-# @Author : 梗小旭
-# @Time   : 2022-09-02
-# @File   : create_yaml_file.py
 
-import os
-from conf.setting import setting
-
-
-class CreateYamlFile:
-    """创建yaml文件模板"""
-
-    def __init__(self,directory_name:str,yaml_name:str):
-        """
-        :param directory_name: 目录名称
-        :param yaml_name: yaml文件名称
-        """
-        if not os.path.exists(setting.DATA_FILE_PATH + directory_name):
-            os.mkdir(setting.DATA_FILE_PATH + directory_name)
-        self.yaml_file_path=setting.DATA_FILE_PATH + directory_name + "/" + yaml_name + ".yaml"
-        if os.path.exists(self.yaml_file_path):
-            raise Exception(f"{directory_name}目录下的{yaml_name}文件已存在！")
-
-    def create_yaml_file(self):
-        yaml_content="""
 #allure基础信息配置
 allure_params:
   allureEpic: "项目名称描述"
@@ -78,17 +54,3 @@ case_xxx_01:
     tips:
       - tip: ${{xxx}}
       - tip: ${{xxx}}
-"""
-
-        with open(self.yaml_file_path,"w",encoding="utf-8") as f:
-            f.write(yaml_content)
-
-
-if __name__ == '__main__':
-    cyf=CreateYamlFile('login','login1')
-    cyf.create_yaml_file()
-
-
-
-
-
