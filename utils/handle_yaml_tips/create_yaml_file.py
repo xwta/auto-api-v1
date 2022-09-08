@@ -28,8 +28,10 @@ allure_params:
   allureEpic: "项目名称描述"
   allureFeature: "功能点描述（模块名称）"
   allureStory: "接口名称"
+
+#用例序号默认以case开头，可以在配置文件中更改，xxx为自定义名称
 case_xxx_01:
-  #${xxx}表示从配置文件中获取值，${{xxx}}表示从deps文件中调用方法，$xxx$表示缓存存取文件名
+  #${xxx}表示从配置文件中获取值，${{xxx()}}表示从deps文件中调用方法，${{xxx}}表示缓存存取文件名
   host: ${host}
   url: /xxxx/xxx/xxx
   method: POST
@@ -50,10 +52,12 @@ case_xxx_01:
     is_cache: true #如果不写此项、为空、false，则认为不开启
     #可能存在多个需要存的值
     rules:
-      - jsonpath: $.code  # 采用jsonpath提取值
-        name: $code$
-      - jsonpath: $.code  # 采用jsonpath提取值
-        name: $code$
+      - type: response | headers | cookies | requests
+        jsonpath: $.code  # 采用jsonpath提取值
+        name: ${{code}}
+      - type: response | headers | cookies | requests
+        jsonpath: $.code  # 采用jsonpath提取值
+        name: ${{code}}
   #是否需要依赖数据
   dependent_data:
     is_dependent: true #如果不写此项、为空、false，则认为不需要
@@ -76,16 +80,16 @@ case_xxx_01:
       - sql: xxxxxx
       - sql: xxxxxx
     tips:
-      - tip: ${{xxx}}
-      - tip: ${{xxx}}
+      - tip: ${{xxx()}}
+      - tip: ${{xxx()}}
 """
 
-        with open(self.yaml_file_path,"w",encoding="utf-8") as f:
+        with open(self.yaml_file_path,"w",encoding=setting.GLOBAL_ENCODING) as f:
             f.write(yaml_content)
 
 
 if __name__ == '__main__':
-    cyf=CreateYamlFile('login','login1')
+    cyf=CreateYamlFile('login','login')
     cyf.create_yaml_file()
 
 
