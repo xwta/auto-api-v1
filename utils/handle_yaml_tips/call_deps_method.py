@@ -7,7 +7,7 @@ import importlib
 from conf.setting import setting
 
 
-def call_deps_method(method_name: str, *args):
+def call_deps_method(method_name: str, args=None):
     """
     默认读取配置文件下conf.deps文件内的自定义方法，如果需要更改其他文件，
     在setting.DEPS_NAME更改路径

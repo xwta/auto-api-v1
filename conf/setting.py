@@ -4,7 +4,8 @@
 # @File   : setting.py
 
 import os
-
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(__file__))+"/conf/")
 class Setting:
 
     host = "192.168.2.31"
@@ -33,4 +34,4 @@ class Setting:
 
 
 
-setting=Setting()
+setting =Setting()
