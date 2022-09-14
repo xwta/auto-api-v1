@@ -1,0 +1,113 @@
+
+#allure基础信息配置
+allure_params:
+  allureEpic: "项目名称描述"
+  allureFeature: "功能点描述（模块名称）"
+  allureStory: "接口名称"
+
+#用例序号默认以case开头，可以在配置文件中更改，xxx为自定义名称
+case_xxx_01:
+  #${xxx}表示从配置文件中获取值，${{xxx()}}表示从deps文件中调用方法，${{xxx}}表示缓存存取文件名
+  host: ${host}
+  url: /xxxx/xxx/xxx
+  method: POST
+  title: 验证XXXX成功
+  headers:
+    content-type: application/json
+    #默认false或者空,可以不使用
+    cookies: false
+  #请求参数分为4种类型，values根据类型传入不同的参数
+  data:
+    type: data | json | file | params
+    values: {"name":"zwx"}
+    file_path: ../data/1.png  #可能存在同时需要上传参数和文件的情况
+  #空、true默认执行，false不执行该用例
+  is_run:
+  #是否在接口返回值存入缓存中，type: redis | text ，放入配置文件中，总的来控制是使用文本还是redis存缓存数据
+  sava_cache:
+    is_cache: true #如果不写此项、为空、false，则认为不开启
+    #可能存在多个需要存的值
+    rules:
+      - type: response | headers | cookies | requests
+        jsonpath: $.code  # 采用jsonpath提取值
+        name: ${{code}}
+      - type: response | headers | cookies | requests
+        jsonpath: $.code  # 采用jsonpath提取值
+        name: ${{code}}
+  #是否需要依赖数据
+  dependent_data:
+    is_dependent: true #如果不写此项、为空、false，则认为不需要
+    rules:
+      - case_name:
+        name: $code$
+  #断言，可以存在多个
+  assert:
+    is_full_assert: false  #是否全量断言，只有写了此关键字并设置true才开启，其他默认不开启走具体返回值断言
+    rules:
+      - jsonpath: $.code
+        type: == | >= | <= | != | in | not in 
+        value: 200   #预期结果
+      - jsonpath: $.code
+        type: == | >= | <= | != | in | not in 
+        value: 200   #预期结果
+  #用例执行完、后置清理数据操作
+  teardown:
+    sqls:
+      - sql: xxxxxx
+      - sql: xxxxxx
+    tips:
+      - tip: ${{xxx()}}
+      - tip: ${{xxx()}}
+
+case_xxx_02:
+  #${xxx}表示从配置文件中获取值，${{xxx()}}表示从deps文件中调用方法，${{xxx}}表示缓存存取文件名
+  host: ${host}
+  url: /xxxx/xxx/xxx
+  method: POST
+  title: 验证XXXX成功
+  headers:
+    content-type: application/json
+    #默认false或者空,可以不使用
+    cookies: false
+  #请求参数分为4种类型，values根据类型传入不同的参数
+  data:
+    type: data | json | file | params
+    values: {"name":"zwx"}
+    file_path: ../data/1.png  #可能存在同时需要上传参数和文件的情况
+  #空、true默认执行，false不执行该用例
+  is_run:
+  #是否在接口返回值存入缓存中，type: redis | text ，放入配置文件中，总的来控制是使用文本还是redis存缓存数据
+  sava_cache:
+    is_cache: true #如果不写此项、为空、false，则认为不开启
+    #可能存在多个需要存的值
+    rules:
+      - type: response | headers | cookies | requests
+        jsonpath: $.code  # 采用jsonpath提取值
+        name: ${{code}}
+      - type: response | headers | cookies | requests
+        jsonpath: $.code  # 采用jsonpath提取值
+        name: ${{code}}
+  #是否需要依赖数据
+  dependent_data:
+    is_dependent: true #如果不写此项、为空、false，则认为不需要
+    rules:
+      - case_name:
+        name: $code$
+  #断言，可以存在多个
+  assert:
+    is_full_assert: false  #是否全量断言，只有写了此关键字并设置true才开启，其他默认不开启走具体返回值断言
+    rules:
+      - jsonpath: $.code
+        type: == | >= | <= | != | in | not in
+        value: 200   #预期结果
+      - jsonpath: $.code
+        type: == | >= | <= | != | in | not in
+        value: 200   #预期结果
+  #用例执行完、后置清理数据操作
+  teardown:
+    sqls:
+      - sql: xxxxxx
+      - sql: xxxxxx
+    tips:
+      - tip: ${{xxx()}}
+      - tip: ${{xxx()}}
