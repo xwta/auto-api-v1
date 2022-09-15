@@ -14,3 +14,6 @@ class NotFoundError(BaseExceptions):
 class NotCaseKeyError(BaseExceptions):
     pass
 
+class NotAllowCacheError(BaseExceptions):
+    pass
+
