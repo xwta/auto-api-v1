@@ -4,12 +4,12 @@
 # @File   : setting.py
 
 import os
-import sys
-sys.path.append(os.path.dirname(os.path.dirname(__file__))+"/conf/")
+
+
 class Setting:
 
     host = "192.168.2.31"  # ip+port
-    HTTPTYPE = "http"
+    HTTP_TYPE = "http"
     DIR = os.path.dirname(os.path.dirname(__file__))
     DATA_FILE_PATH = DIR + "/data/"   # yaml存放路径
     CACHE_FILE_PATH = DIR + "/cache/"  # cache缓存文件存放路径
@@ -18,8 +18,6 @@ class Setting:
 
 
     YAML_CASE_STARTSWITH = "case"  # yaml文件中用例序号默认以case开头格式
-    YAML_REQUIRED_KEYS = ["host","url","method","title","assert"]  # yaml配置文件中必填项
-
     GLOBAL_ENCODING: str = 'utf-8'  # 全局编码
 
     LOGGER_DIR: str = os.path.join(DIR, 'logs')  # 日志目录

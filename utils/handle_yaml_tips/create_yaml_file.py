@@ -45,7 +45,7 @@ case_xxx_01:
     type: data | json | file | params
     values: {"name":"zwx"}
     file_path: ../data/1.png  #可能存在同时需要上传参数和文件的情况
-  #空、true默认执行，false不执行该用例
+  #空、true、None默认执行，false不执行该用例
   is_run:
   #是否在接口返回值存入缓存中，type: redis | text ，放入配置文件中，总的来控制是使用文本还是redis存缓存数据
   sava_cache:

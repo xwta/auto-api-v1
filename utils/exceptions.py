@@ -22,3 +22,4 @@ class NotAllowCacheError(BaseExceptions):
 
 class ValueTypeError(BaseExceptions):
     pass
+

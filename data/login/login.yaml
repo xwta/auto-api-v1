@@ -18,8 +18,8 @@ case_xxx_01:
     cookies: false
   #请求参数分为4种类型，values根据类型传入不同的参数
   data:
-    type: data | json | file | params
-    values: {"name":"zwx"}
+    type: data
+    values: {"name":"zwx","add":"${{add(1,8)}}","host":"${host}"}
     file_path: ../data/1.png  #可能存在同时需要上传参数和文件的情况
   #空、true默认执行，false不执行该用例
   is_run:
@@ -28,10 +28,10 @@ case_xxx_01:
     is_cache: true #如果不写此项、为空、false，则认为不开启
     #可能存在多个需要存的值
     rules:
-      - type: response | headers | cookies | requests
+      - type: response
         jsonpath: $.code  # 采用jsonpath提取值
         name: ${{code}}
-      - type: response | headers | cookies | requests
+      - type: headers
         jsonpath: $.code  # 采用jsonpath提取值
         name: ${{code}}
   #是否需要依赖数据
@@ -56,8 +56,8 @@ case_xxx_01:
       - sql: xxxxxx
       - sql: xxxxxx
     tips:
-      - tip: ${{xxx()}}
-      - tip: ${{xxx()}}
+      - tip: ${{add(1,3)}}
+      - tip: ${{add(2,9)}}
 
 case_xxx_02:
   #${xxx}表示从配置文件中获取值，${{xxx()}}表示从deps文件中调用方法，${{xxx}}表示缓存存取文件名
@@ -71,20 +71,20 @@ case_xxx_02:
     cookies: false
   #请求参数分为4种类型，values根据类型传入不同的参数
   data:
-    type: data | json | file | params
+    type: json
     values: {"name":"zwx"}
     file_path: ../data/1.png  #可能存在同时需要上传参数和文件的情况
-  #空、true默认执行，false不执行该用例
-  is_run:
+  #空、true、None默认执行，false不执行该用例
+  is_run: false
   #是否在接口返回值存入缓存中，type: redis | text ，放入配置文件中，总的来控制是使用文本还是redis存缓存数据
   sava_cache:
     is_cache: true #如果不写此项、为空、false，则认为不开启
     #可能存在多个需要存的值
     rules:
-      - type: response | headers | cookies | requests
+      - type: cookies
         jsonpath: $.code  # 采用jsonpath提取值
         name: ${{code}}
-      - type: response | headers | cookies | requests
+      - type: requests
         jsonpath: $.code  # 采用jsonpath提取值
         name: ${{code}}
   #是否需要依赖数据
@@ -109,5 +109,5 @@ case_xxx_02:
       - sql: xxxxxx
       - sql: xxxxxx
     tips:
-      - tip: ${{xxx()}}
-      - tip: ${{xxx()}}
+      - tip: ${{add(4,4)}}
+      - tip: ${{add(4,9)}}
