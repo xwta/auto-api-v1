@@ -4,16 +4,21 @@
 # @File   : exceptions.py
 
 
-
 class BaseExceptions(Exception):
     pass
+
 
 class NotFoundError(BaseExceptions):
     pass
 
+
 class NotCaseKeyError(BaseExceptions):
     pass
+
 
 class NotAllowCacheError(BaseExceptions):
     pass
 
+
+class ValueTypeError(BaseExceptions):
+    pass

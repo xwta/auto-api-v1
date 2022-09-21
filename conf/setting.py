@@ -8,7 +8,8 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__))+"/conf/")
 class Setting:
 
-    host = "192.168.2.31"
+    host = "192.168.2.31"  # ip+port
+    HTTPTYPE = "http"
     DIR = os.path.dirname(os.path.dirname(__file__))
     DATA_FILE_PATH = DIR + "/data/"   # yaml存放路径
     CACHE_FILE_PATH = DIR + "/cache/"  # cache缓存文件存放路径

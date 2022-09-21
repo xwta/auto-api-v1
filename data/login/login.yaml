@@ -9,8 +9,8 @@ allure_params:
 case_xxx_01:
   #${xxx}表示从配置文件中获取值，${{xxx()}}表示从deps文件中调用方法，${{xxx}}表示缓存存取文件名
   host: ${host}
-  url: /xxxx/xxx/xxx
-  method: POST
+  url: /cm/workpace/
+  method: GET
   title: 验证XXXX成功
   headers:
     content-type: application/json

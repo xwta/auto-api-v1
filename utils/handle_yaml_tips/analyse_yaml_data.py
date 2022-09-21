@@ -29,15 +29,16 @@ class AnalyseYamlData(ReadYamlData):
         :param params: yaml文件中对应key的值
         :return:
         """
-        ret_params = ""
-        setting_re_list = re.findall(self.setting_regular, params)
-        method_re_list = re.findall(self.method_regular, params)
         if isinstance(params, str):
+            setting_re_list = re.findall(self.setting_regular, params)
+            method_re_list = re.findall(self.method_regular, params)
             ret_params = self.handle_str_rules(params,setting_re_list,method_re_list)
-            return ret_params
         elif isinstance(params, dict):
+            ret_params=self.search_dict_rules(params)
+        else:
+            ret_params = params
+        return ret_params
 
-            return ret_params
 
     def yaml_required_keys(self, case_order, case_keys) -> None:
         """
@@ -156,7 +157,9 @@ class AnalyseYamlData(ReadYamlData):
                 # 判断用例中必填的关键内容是否缺失
                 self.yaml_required_keys(case_id, case_data.keys())
                 case_info = {
-                    "url": self.get_host(case_id, case_data)
+                    "url": self.get_url(case_id, case_data),
+                    "method": self.get_method(case_id, case_data),
+                    "title": self.get_title(case_id, case_data),
                 }
                 print(case_info)
 
@@ -182,14 +185,43 @@ class AnalyseYamlData(ReadYamlData):
         :return:
         """
         key_value = case_data.get("url")
-        if key_value is None:
+        if key_value is not None:
+            url_path = self.analyse_params_rules(key_value)
+            url= setting.HTTPTYPE + "://" + self.get_host(case_id,case_data) + url_path
+            return url
+        else:
             raise NotCaseKeyError(f"用例{case_id},缺少url关键字key！")
 
+    def get_method(self,case_id: str, case_data: Dict ) -> Text:
+        """
+        获取用例中的请求方式
+        :param case_id:
+        :param case_data:
+        :return:
+        """
+        key_value = case_data.get("method")
+        if key_value is not None:
+            if key_value.upper() in ["POST","GET","DELETE","PUT","HEAD","OPTIONS"]:
+                return key_value.upper()
+            else:
+                raise NotFoundError(f"{key_value}请求方式填写错误或者不支持该方式")
+        else:
+            raise NotCaseKeyError(f"用例{case_id},缺少method关键字key！")
+    def get_title(self,case_id: str, case_data: Dict) -> Text:
+        """
+        获取用例中的标题
+        :param case_id:
+        :param case_data:
+        :return:
+        """
+        key_value = case_data.get("title")
+        if key_value is not None:
+            return key_value
+        else:
+            raise NotCaseKeyError(f"用例{case_id},缺少title关键字key！")
 
 if __name__ == '__main__':
     ayd = AnalyseYamlData('login', 'login')
-    # data = ayd.get_params_rules("/${{add(7,3)}}/xxx/${host},${DEPS_NAME},sad/${{add(2,3)}}")
-    # print(data)
-    name={'name':'${host}','age':{'name':'${{add(2,2)}}'}}
-    data=ayd.search_dict_rules(name)
-    print(data)
+    # name="/${{add(7,3)}}/xxx/${host},${DEPS_NAME},sad/${{add(2,3)}}"
+    ayd.analyse_yaml_data()
+
