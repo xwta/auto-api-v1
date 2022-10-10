@@ -5,24 +5,23 @@ allure_params:
   allureFeature: "功能点描述（模块名称）"
   allureStory: "接口名称"
 
-#用例序号默认以case开头，可以在配置文件中更改，xxx为自定义名称
 case_xxx_01:
   #${xxx}表示从配置文件中获取值，${{xxx()}}表示从deps文件中调用方法，${{xxx}}表示缓存存取文件名
   host: ${host}
-  url: /cm/workpace/
-  method: GET
-  title: 验证XXXX成功
+  url: /queryPostionList
+  method: POST
+  title: 验证登录成功
   headers:
-    content-type: application/json
-    #默认false或者空,可以不使用
-    cookies: false
+    content-type: application/x-www-form-urlencoded   # application/json
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36
+    Cookie: SERVERID=248; Hm_lvt_6fb35abaf76325a4316e33e23c984e73=1665387933; Hm_lpvt_6fb35abaf76325a4316e33e23c984e73=1665387941; SESSION=667d9ef0-f1ff-467d-90da-02ae2b23f61b; returnUrl="http://www.7881.com/common/game/js/game_base_info.js"
   #请求参数分为4种类型，values根据类型传入不同的参数
   data:
     type: data
-    values: {"name":"zwx","add":"${{add(1,8)}}","host":"${host}"}
+    values: {"code":"hostSearch_pc"}
     file_path: ../data/1.png  #可能存在同时需要上传参数和文件的情况
   #空、true默认执行，false不执行该用例
-  is_run:
+  is_run: false
   #是否在接口返回值存入缓存中，type: redis | text ，放入配置文件中，总的来控制是使用文本还是redis存缓存数据
   sava_cache:
     is_cache: true #如果不写此项、为空、false，则认为不开启
@@ -41,14 +40,14 @@ case_xxx_01:
       - case_name: case_xxx_01
         name: ${{code}}
   #断言，可以存在多个
-  assert:
+  asserts:
     is_full_assert: false  #是否全量断言，只有写了此关键字并设置true才开启，其他默认不开启走具体返回值断言
     rules:
       - jsonpath: $.code
-        type: == | >= | <= | != | in | not in 
+        type: ==
         value: 200   #预期结果
       - jsonpath: $.code
-        type: == | >= | <= | != | in | not in 
+        type: ==
         value: 200   #预期结果
   #用例执行完、后置清理数据操作
   teardown:
@@ -58,56 +57,3 @@ case_xxx_01:
     tips:
       - tip: ${{add(1,3)}}
       - tip: ${{add(2,9)}}
-
-case_xxx_02:
-  #${xxx}表示从配置文件中获取值，${{xxx()}}表示从deps文件中调用方法，${{xxx}}表示缓存存取文件名
-  host: ${host}
-  url: /xxxx/xxx/xxx
-  method: POST
-  title: 验证XXXX成功
-  headers:
-    content-type: application/json
-    #默认false或者空,可以不使用
-    cookies: false
-  #请求参数分为4种类型，values根据类型传入不同的参数
-  data:
-    type: json
-    values: {"name":"zwx"}
-    file_path: ../data/1.png  #可能存在同时需要上传参数和文件的情况
-  #空、true、None默认执行，false不执行该用例
-  is_run: false
-  #是否在接口返回值存入缓存中，type: redis | text ，放入配置文件中，总的来控制是使用文本还是redis存缓存数据
-  sava_cache:
-    is_cache: true #如果不写此项、为空、false，则认为不开启
-    #可能存在多个需要存的值
-    rules:
-      - type: cookies
-        jsonpath: $.code  # 采用jsonpath提取值
-        name: ${{code}}
-      - type: requests
-        jsonpath: $.code  # 采用jsonpath提取值
-        name: ${{code}}
-  #是否需要依赖数据
-  dependent_data:
-    is_dependent: true #如果不写此项、为空、false，则认为不需要
-    rules:
-      - case_name: case_xxx_01
-        name: ${{code}}
-  #断言，可以存在多个
-  assert:
-    is_full_assert: false  #是否全量断言，只有写了此关键字并设置true才开启，其他默认不开启走具体返回值断言
-    rules:
-      - jsonpath: $.code
-        type: == | >= | <= | != | in | not in
-        value: 200   #预期结果
-      - jsonpath: $.code
-        type: == | >= | <= | != | in | not in
-        value: 200   #预期结果
-  #用例执行完、后置清理数据操作
-  teardown:
-    sqls:
-      - sql: xxxxxx
-      - sql: xxxxxx
-    tips:
-      - tip: ${{add(4,4)}}
-      - tip: ${{add(4,9)}}

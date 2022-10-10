@@ -279,14 +279,14 @@ class AnalyseYamlData(ReadYamlData):
         else:
             return False
 
-    def get_assert(self, case_id: str, case_data: Dict) -> Any:
+    def get_asserts(self, case_id: str, case_data: Dict) -> Any:
         """
         获取用例中的断言配置项
         :param case_id:
         :param case_data:
         :return:
         """
-        key_value = case_data.get("assert")
+        key_value = case_data.get("asserts")
         if key_value is not None:
             return key_value
         else:
@@ -320,6 +320,7 @@ class AnalyseYamlData(ReadYamlData):
         allure_params = yaml_data["allure_params"]  # allure基础配置信息
         all_keys = yaml_data.keys()
         case_list = []  # 用例list
+        case_title= []  # 用例名称
         for case_id in all_keys:
             # 默认以“case”开头的用例名称才匹配
             if case_id.startswith(setting.YAML_CASE_STARTSWITH):
@@ -334,15 +335,16 @@ class AnalyseYamlData(ReadYamlData):
                     "is_run": self.get_is_run(case_id, case_data),
                     "sava_cache": self.get_save_cache(case_id, case_data),
                     "dependent_data": self.get_dependent_data(case_id, case_data),
-                    "assert": self.get_assert(case_id, case_data),
+                    "asserts": self.get_asserts(case_id, case_data),
                     "teardown": self.get_teardown(case_data)
                 }
                 case_list.append(case_info)
-        return allure_params,case_list
+                case_title.append(case_info['title'])
+        return allure_params,case_title,case_list
 
 if __name__ == '__main__':
     ayd = AnalyseYamlData('login', 'login')
     # name="/${{add(7,3)}}/xxx/${host},${DEPS_NAME},sad/${{add(2,3)}}"
     data=ayd.analyse_yaml_data()
-    print(data)
+    print(data[2][0])
 

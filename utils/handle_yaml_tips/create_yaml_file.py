@@ -38,8 +38,7 @@ case_xxx_01:
   title: 验证XXXX成功
   headers:
     content-type: application/json
-    #默认false或者空,可以不使用
-    cookies: false
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36
   #请求参数分为4种类型，values根据类型传入不同的参数
   data:
     type: data | json | file | params
@@ -65,11 +64,11 @@ case_xxx_01:
       - case_name: case_xxx_01
         name: ${{code}}
   #断言，可以存在多个
-  assert:
+  asserts:
     is_full_assert: false  #是否全量断言，只有写了此关键字并设置true才开启，其他默认不开启走具体返回值断言
     rules:
       - jsonpath: $.code
-        type: == | >= | <= | != | in | not in 
+        type: == | >= | <= | != | in | not in  #注意pyyaml因版本问题不兼容!=,需要加引号'!='
         value: 200   #预期结果
       - jsonpath: $.code
         type: == | >= | <= | != | in | not in 

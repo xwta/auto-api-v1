@@ -8,8 +8,8 @@ import os
 
 class Setting:
 
-    host = "192.168.2.75"  # ip+port
-    HTTP_TYPE = "http"
+    host = "search.7881.com"  # ip+port
+    HTTP_TYPE = "https"
     DIR = os.path.dirname(os.path.dirname(__file__))
     DATA_FILE_PATH = DIR + "/data/"   # yaml存放路径
     CACHE_FILE_PATH = DIR + "/cache/"  # cache缓存文件存放路径
