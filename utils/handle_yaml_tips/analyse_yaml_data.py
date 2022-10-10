@@ -338,9 +338,11 @@ class AnalyseYamlData(ReadYamlData):
                     "teardown": self.get_teardown(case_data)
                 }
                 case_list.append(case_info)
+        return allure_params,case_list
 
 if __name__ == '__main__':
     ayd = AnalyseYamlData('login', 'login')
     # name="/${{add(7,3)}}/xxx/${host},${DEPS_NAME},sad/${{add(2,3)}}"
-    ayd.analyse_yaml_data()
+    data=ayd.analyse_yaml_data()
+    print(data)
 

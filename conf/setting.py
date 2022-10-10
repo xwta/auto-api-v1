@@ -8,7 +8,7 @@ import os
 
 class Setting:
 
-    host = "192.168.2.31"  # ip+port
+    host = "192.168.2.75"  # ip+port
     HTTP_TYPE = "http"
     DIR = os.path.dirname(os.path.dirname(__file__))
     DATA_FILE_PATH = DIR + "/data/"   # yaml存放路径
