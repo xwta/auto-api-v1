@@ -8,20 +8,19 @@ allure_params:
 case_xxx_01:
   #${xxx}表示从配置文件中获取值，${{xxx()}}表示从deps文件中调用方法，${{xxx}}表示缓存存取文件名
   host: ${host}
-  url: /queryPostionList
-  method: POST
-  title: 验证登录成功
+  url: /user-service-api/api/personal/base-info
+  method: GET
+  title: 验证账号密码正确，登录成功
   headers:
-    content-type: application/x-www-form-urlencoded   # application/json
-    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36
-    Cookie: SERVERID=248; Hm_lvt_6fb35abaf76325a4316e33e23c984e73=1665387933; Hm_lpvt_6fb35abaf76325a4316e33e23c984e73=1665387941; SESSION=667d9ef0-f1ff-467d-90da-02ae2b23f61b; returnUrl="http://www.7881.com/common/game/js/game_base_info.js"
+    content-type: application/json
+    User-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36
+    Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1XzE1NDUyNjkwNjg0MjQiLCJ1c2VySWQiOjEyMDY0MzAyMywibmlja05hbWUiOiIxNTMqKioqNTY3OCIsImltYWdlVXJsIjoiaHR0cHM6Ly91c2VycGljLjc4ODEuY29tL3RlbXBvcmFyeS9nb29kcy8xMjM0NTYvMWNkYzlkODRlMGVlNDkxNGJkMTkyOTcwOTVhNjBkMGYuanBnP3gtb3NzLXByb2Nlc3M9c3R5bGUvbm9ybWFsIiwicGhvbmUiOiIxNTMxMjM0NTY3OCIsInB3ZFVwZGF0ZVRpbWUiOiIyMDE5LTAxLTE4IDEwOjU0OjQwIiwibGFzdExvZ2luVGltZSI6IjIwMjItMTAtMTEgMTU6MDI6NTYiLCJyZW1lbWJlck1lIjpmYWxzZSwic3lzdGVtVmVyc2lvbiI6IjEiLCJwbGF0Zm9ybSI6Ijc4ODEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiZXhwIjoxNjY2MDc2NTc2fQ.fFseUPKngkce2YNdtHfJltCG3TRKAs5jSPyWPlTKiSY
   #请求参数分为4种类型，values根据类型传入不同的参数
   data:
-    type: data
-    values: {"code":"hostSearch_pc"}
-    file_path: ../data/1.png  #可能存在同时需要上传参数和文件的情况
+    type: params
+    values:
   #空、true默认执行，false不执行该用例
-  is_run: false
+  is_run:
   #是否在接口返回值存入缓存中，type: redis | text ，放入配置文件中，总的来控制是使用文本还是redis存缓存数据
   sava_cache:
     is_cache: true #如果不写此项、为空、false，则认为不开启
@@ -45,10 +44,10 @@ case_xxx_01:
     rules:
       - jsonpath: $.code
         type: ==
-        value: 200   #预期结果
-      - jsonpath: $.code
+        value: 0   #预期结果
+      - jsonpath: $.successful
         type: ==
-        value: 200   #预期结果
+        value: true   #预期结果
   #用例执行完、后置清理数据操作
   teardown:
     sqls:

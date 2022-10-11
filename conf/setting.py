@@ -8,10 +8,11 @@ import os
 
 class Setting:
 
-    host = "search.7881.com"  # ip+port
+    host = "gw.7881.com"  # ip+port或者域名
     HTTP_TYPE = "https"
     DIR = os.path.dirname(os.path.dirname(__file__))
     DATA_FILE_PATH = DIR + "/data/"   # yaml存放路径
+    CASE_FILE_PATH = DIR + "/case/"   # case存放路径
     CACHE_FILE_PATH = DIR + "/cache/"  # cache缓存文件存放路径
     CONF_FILE_PATH = DIR + "/conf/"  # 配置文件存放路径
     DEPS_NAME = "conf.deps"  # 自定义方法的py文件路径

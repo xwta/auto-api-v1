@@ -8,6 +8,7 @@ from typing import Dict
 from utils.logger import logger
 from utils.exceptions import *
 from utils.handle_yaml_tips.analyse_yaml_data import AnalyseYamlData
+from utils.handle_yaml_tips.asserts_result import asserts_result
 
 
 class BaseRequests:
@@ -45,24 +46,24 @@ class BaseRequests:
     def get(self):
 
         if self.type == "params":
-            res = requests.get(url=self.url,params=self.data,headers=self.headers)
+            res = requests.get(url=self.url, params=self.data, headers=self.headers)
         else:
             res = None
         return res
 
     def delete(self):
 
-        res = requests.delete(url=self.url,headers=self.headers)
+        res = requests.delete(url=self.url, headers=self.headers)
         return res
 
     def put(self):
 
-        res = requests.put(url=self.url,data=self.data,headers=self.headers)
+        res = requests.put(url=self.url, data=self.data, headers=self.headers)
         return res
 
     def head(self):
 
-        res = requests.head(url=self.url,headers=self.headers)
+        res = requests.head(url=self.url, headers=self.headers)
         return res
 
     def base_requests(self):
@@ -72,7 +73,7 @@ class BaseRequests:
         """
         # 当is_run不是false时，用例才执行
         if self.is_run is not False:
-            logger.info("=" * 40)
+            logger.info("=" * 20 + self.case_id + "=" * 20)
             logger.info(f"用例标题:{self.title}")
             logger.info(f"请求URL:{self.url}")
             logger.info(f"请求方法:{self.method}")
@@ -101,14 +102,16 @@ class BaseRequests:
                 logger.info(f"响应结果:{res.json()}")
             except:
                 logger.info(f"响应结果:{res.text}")
+            assert_result = asserts_result(res.json(), self.asserts)
+            return assert_result
 
         else:
             logger.warning(f"{self.case_id} 跳过不执行")
 
+
 if __name__ == '__main__':
     ayd = AnalyseYamlData("login", "login")
-    case = ayd.analyse_yaml_data()[2][0]
-    br = BaseRequests(case)
-    br.base_requests()
-
-
+    case_list = ayd.analyse_yaml_data()[2]
+    for case in case_list:
+        br = BaseRequests(case)
+        br.base_requests()

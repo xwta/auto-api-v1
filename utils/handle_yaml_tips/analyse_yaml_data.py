@@ -78,8 +78,8 @@ class AnalyseYamlData(ReadYamlData):
         :return:
         """
         cache_file_name = cache_re_list[0]
-        hcf = HandleCacheFile(cache_file_name)
-        data = hcf.read_cache_file()
+        hcf = HandleCacheFile()
+        data = hcf.read_cache_file(cache_file_name)
         return data
 
     def search_dict_rules(self, params_dict):
