@@ -27,6 +27,8 @@ class Setting:
     LOGGER_ROTATION: str = "100 MB"  # 日志分片: 按 时间段/文件大小 切分日志. 例如 ["500 MB" | "12:00" | "1 week"]
     LOGGER_RETENTION: str = "1 days"  # 日志保留的时间: 超出将删除最早的日志. 例如 ["1 days"]
 
+    DING_ACCESS_TOKEN: str = "0d93133665496298c235f9e7568c7ff175786eef5bff0183bd99dbf03f947323"  # 钉钉群access_token
+    MESSAGE_SWITCH = False  # 发送钉钉或者企业微信、邮件等开关
 
 
 

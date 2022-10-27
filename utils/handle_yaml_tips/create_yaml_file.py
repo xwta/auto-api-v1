@@ -51,17 +51,17 @@ case_xxx_01:
     is_cache: true #如果不写此项、为空、false，则认为不开启
     #可能存在多个需要存的值
     rules:
-      - type: response | headers | cookies | requests
+      - type: response | headers | cookies
         jsonpath: $.code  # 采用jsonpath提取值
         name: ${{code}}
-      - type: response | headers | cookies | requests
+      - type: response | headers | cookies
         jsonpath: $.code  # 采用jsonpath提取值
         name: ${{code}}
   #是否需要依赖数据
   dependent_data:
     is_dependent: true #如果不写此项、为空、false，则认为不需要
     rules:
-      - case_name: case_xxx_01
+      - case_name: /dir_name/file_name/case_id
         name: ${{code}}
   #断言，可以存在多个
   asserts:

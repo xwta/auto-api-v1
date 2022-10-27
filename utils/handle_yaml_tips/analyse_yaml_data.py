@@ -31,9 +31,9 @@ class AnalyseYamlData(ReadYamlData):
         if isinstance(params, str):
             setting_re_list = re.findall(self.setting_regular, params)
             method_re_list = re.findall(self.method_regular, params)
-            ret_params = self.handle_str_rules(params,setting_re_list,method_re_list)
+            ret_params = self.handle_str_rules(params, setting_re_list, method_re_list)
         elif isinstance(params, dict):
-            ret_params=self.search_dict_rules(params)
+            ret_params = self.search_dict_rules(params)
         else:
             ret_params = params
         return ret_params
@@ -99,8 +99,8 @@ class AnalyseYamlData(ReadYamlData):
             elif isinstance(value, str):
                 setting_re_list = re.findall(self.setting_regular, value)
                 method_re_list = re.findall(self.method_regular, value)
-                new_value=self.handle_str_rules(value,setting_re_list,method_re_list)
-                params_dict[key]=new_value
+                new_value = self.handle_str_rules(value, setting_re_list, method_re_list)
+                params_dict[key] = new_value
 
         return params_dict
 
@@ -155,12 +155,12 @@ class AnalyseYamlData(ReadYamlData):
         key_value = case_data.get("url")
         if key_value is not None:
             url_path = self.analyse_params_rules(key_value)
-            url= setting.HTTP_TYPE + "://" + self.get_host(case_id,case_data) + url_path
+            url = setting.HTTP_TYPE + "://" + self.get_host(case_id, case_data) + url_path
             return url
         else:
             raise NotCaseKeyError(f"用例{case_id},缺少url关键字key！")
 
-    def get_method(self,case_id: str, case_data: Dict ) -> Text:
+    def get_method(self, case_id: str, case_data: Dict) -> Text:
         """
         获取用例中的请求方式
         :param case_id:
@@ -169,12 +169,13 @@ class AnalyseYamlData(ReadYamlData):
         """
         key_value = case_data.get("method")
         if key_value is not None:
-            if key_value.upper() in ["POST","GET","DELETE","PUT","HEAD","OPTIONS"]:
+            if key_value.upper() in ["POST", "GET", "DELETE", "PUT", "HEAD", "OPTIONS"]:
                 return key_value.upper()
             else:
                 raise NotFoundError(f"{key_value}请求方式填写错误或者不支持该方式")
         else:
             raise NotCaseKeyError(f"用例{case_id},缺少method关键字key！")
+
     def get_title(self, case_id: str, case_data: Dict) -> Text:
         """
         获取用例中的标题
@@ -200,7 +201,8 @@ class AnalyseYamlData(ReadYamlData):
             return key_value
         else:
             raise NotCaseKeyError(f"用例{case_id},缺少headers关键字key！")
-    def get_data(self,  case_id: str, case_data: Dict) -> Dict:
+
+    def get_data(self, case_id: str, case_data: Dict) -> Dict:
         """
         获取用例中的请求参数
         :param case_id:
@@ -209,11 +211,11 @@ class AnalyseYamlData(ReadYamlData):
         """
         key_value = case_data.get("data")
         if key_value is not None:
-            req_type= key_value.get('type')
-            if req_type in ["data","json","file","params"]:
+            req_type = key_value.get('type')
+            if req_type in ["data", "json", "file", "params"]:
                 # 请求参数中可以写自定义方法和配置文件中数据
                 values = self.analyse_params_rules(key_value.get("values"))
-                key_value["values"]=values
+                key_value["values"] = values
                 return key_value
             else:
                 raise NotFoundError(f"用例{case_id},type类型中不存在:{req_type}")
@@ -243,11 +245,11 @@ class AnalyseYamlData(ReadYamlData):
         key_value = case_data.get("sava_cache")
         if key_value is not None:
             is_cache = key_value.get("is_cache")
-            if is_cache is not False:
+            if is_cache:
                 rules = key_value.get("rules")
                 if rules is not None:
                     for rule in rules:
-                        if rule.get("type") not in ["response","headers","cookies","requests"]:
+                        if rule.get("type") not in ["response", "headers", "cookies"]:
                             raise NotFoundError(f"用例{case_id},缓存取值类型无:{rule.get('type')}")
                     return rules
                 else:
@@ -257,6 +259,7 @@ class AnalyseYamlData(ReadYamlData):
                 return False
         else:
             return False
+
     def get_dependent_data(self, case_id: str, case_data: Dict) -> Any:
         """
         获取用例中配置的依赖数据
@@ -267,7 +270,7 @@ class AnalyseYamlData(ReadYamlData):
         key_value = case_data.get("dependent_data")
         if key_value is not None:
             is_dependent = key_value.get("is_dependent")
-            if is_dependent is not False:
+            if is_dependent:
                 rules = key_value.get("rules")
                 if rules is not None:
                     return rules
@@ -302,14 +305,14 @@ class AnalyseYamlData(ReadYamlData):
         key_value = case_data.get("teardown")
         if key_value is not None:
             tips = key_value.get("tips")
-            new_tips_list=[]
+            new_tips_list = []
             # 执行tip中方法，返回值只表示成功执行，后续不会使用
             for tip in tips:
-                temp_tip_dict={}
-                data=self.analyse_params_rules(tip.get("tip"))
-                temp_tip_dict["tip"]=data
+                temp_tip_dict = {}
+                data = self.analyse_params_rules(tip.get("tip"))
+                temp_tip_dict["tip"] = data
                 new_tips_list.append(temp_tip_dict)
-            key_value["tips"]=new_tips_list
+            key_value["tips"] = new_tips_list
             return key_value
         else:
             return False
@@ -320,7 +323,7 @@ class AnalyseYamlData(ReadYamlData):
         allure_params = yaml_data["allure_params"]  # allure基础配置信息
         all_keys = yaml_data.keys()
         case_list = []  # 用例list
-        case_title= []  # 用例名称
+        case_title = []  # 用例名称
         for case_id in all_keys:
             # 默认以“case”开头的用例名称才匹配
             if case_id.startswith(setting.YAML_CASE_STARTSWITH):
@@ -340,11 +343,11 @@ class AnalyseYamlData(ReadYamlData):
                 }
                 case_list.append(case_info)
                 case_title.append(case_info['title'])
-        return allure_params,case_title,case_list
+        return allure_params, case_title, case_list
+
 
 if __name__ == '__main__':
     ayd = AnalyseYamlData('login', 'login')
     # name="/${{add(7,3)}}/xxx/${host},${DEPS_NAME},sad/${{add(2,3)}}"
-    data=ayd.analyse_yaml_data()
+    data = ayd.analyse_yaml_data()
     print(data[2][0])
-

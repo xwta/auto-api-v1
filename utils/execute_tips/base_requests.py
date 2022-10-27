@@ -9,7 +9,7 @@ from utils.logger import logger
 from utils.exceptions import *
 from utils.handle_yaml_tips.analyse_yaml_data import AnalyseYamlData
 from utils.handle_yaml_tips.asserts_result import asserts_result
-
+from utils.handle_cache_tips.handle_cache_file import HandleCacheFile
 
 class BaseRequests:
     """
@@ -102,6 +102,10 @@ class BaseRequests:
                 logger.info(f"响应结果:{res.json()}")
             except:
                 logger.info(f"响应结果:{res.text}")
+            # 处理缓存信息
+            if self.sava_cache:
+                hcf = HandleCacheFile()
+                hcf.save_cache_data(res,self.sava_cache)
             assert_result = asserts_result(res.json(), self.asserts)
             return assert_result
 
