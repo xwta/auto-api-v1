@@ -7,6 +7,13 @@ from typing import Dict
 
 
 def update_dict_data(data: Dict, k, val):
+    """
+    修改字典中某个key的值
+    :param data: 需要修改的字典数据
+    :param k: 字典中对应的key
+    :param val: key对应需要修改的值
+    :return:
+    """
 
     for key,value in data.items():
         if k == key:
@@ -17,10 +24,5 @@ def update_dict_data(data: Dict, k, val):
                 update_dict_data(value,k,val)
     return data
 
-
-data = {"code":12,"name":"zwx","students":{"addr":"nanjing"}}
-
-result = update_dict_data(data,"addr","beijing")
-print(result)
 
 

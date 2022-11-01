@@ -10,6 +10,7 @@ from utils.exceptions import *
 from utils.handle_yaml_tips.analyse_yaml_data import AnalyseYamlData
 from utils.handle_yaml_tips.asserts_result import asserts_result
 from utils.handle_cache_tips.handle_cache_file import HandleCacheFile
+from utils.handle_yaml_tips.update_dict_data import update_dict_data
 
 class BaseRequests:
     """
@@ -23,13 +24,29 @@ class BaseRequests:
         self.title = case.get('title')
         self.method = case.get('method')
         self.headers = case.get('headers')
-        self.data = case.get('data').get('values')
         self.file_path = case.get('data').get('file_path')
         self.is_run = case.get('is_run')
         self.sava_cache = case.get('sava_cache')
-        self.dependent_data = case.get('dependent_data')
         self.asserts = case.get('asserts')
         self.teardown = case.get('teardown')
+        self.dependent_data = case.get('dependent_data')
+        self.data = case.get('data').get('values')
+        # 处理缓存数据
+        if self.dependent_data:
+            for dep_data in self.dependent_data:
+                dep_type = dep_data.get('type')
+                dep_key = dep_data.get('key')
+                dep_name = dep_data.get('name')
+                cache_value = HandleCacheFile().read_cache_file(dep_name)
+                if dep_type == "headers":
+                    self.headers = update_dict_data(self.headers,dep_key,cache_value)
+                elif dep_type == "data":
+                    self.data = update_dict_data(self.data,dep_key,cache_value)
+                else:
+                    raise NotFoundError(f"依赖项中的type类型不支持{dep_type}")
+
+
+
 
     def post(self):
 

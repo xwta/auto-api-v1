@@ -61,8 +61,9 @@ case_xxx_01:
   dependent_data:
     is_dependent: true #如果不写此项、为空、false，则认为不需要
     rules:
-      - case_name: /dir_name/file_name/case_id
-        name: ${{code}}
+      - type: data | headers  #修改依赖数据的位置
+        key: code   #需要修改的值对应的key
+        name: ${{code}}    #缓存文件名称
   #断言，可以存在多个
   asserts:
     is_full_assert: false  #是否全量断言，只有写了此关键字并设置true才开启，其他默认不开启走具体返回值断言

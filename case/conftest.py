@@ -25,7 +25,7 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
     failed = len([i for i in terminalreporter.stats.get('failed', []) if i.when != 'teardown'])
     error = len([i for i in terminalreporter.stats.get('error', []) if i.when != 'teardown'])
     skipped = len([i for i in terminalreporter.stats.get('skipped', []) if i.when != 'teardown'])
-    success_rate = round(passed / total) * 100
+    success_rate = round(passed / total,4) * 100
     duration = time.time() - terminalreporter._sessionstarttime
     logger.info(f"=" * 20 + "测试报告" + "=" * 20)
     logger.info(f"用例总数：{total}")

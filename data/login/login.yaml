@@ -18,7 +18,7 @@ case_xxx_01:
   #请求参数分为4种类型，values根据类型传入不同的参数
   data:
     type: params
-    values:
+    values: {"code":2,"addr":"beijing"}
   #空、true默认执行，false不执行该用例
   is_run:
   #是否在接口返回值存入缓存中，type: redis | text ，放入配置文件中，总的来控制是使用文本还是redis存缓存数据
@@ -36,8 +36,15 @@ case_xxx_01:
   dependent_data:
     is_dependent: true #如果不写此项、为空、false，则认为不需要
     rules:
-      - case_name: /dir_name/file_name/case_id
+      - type: data
+        key: code
         name: ${{code}}
+      - type: data
+        key: addr
+        name: ${{code}}
+      - type: headers
+        key: content-type
+        name: ${{content-type}}
   #断言，可以存在多个
   asserts:
     is_full_assert: false  #是否全量断言，只有写了此关键字并设置true才开启，其他默认不开启走具体返回值断言
