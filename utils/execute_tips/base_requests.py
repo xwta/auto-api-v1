@@ -7,10 +7,13 @@ import requests
 from typing import Dict
 from utils.logger import logger
 from utils.exceptions import *
-from utils.handle_yaml_tips.analyse_yaml_data import AnalyseYamlData
 from utils.handle_yaml_tips.asserts_result import asserts_result
 from utils.handle_cache_tips.handle_cache_file import HandleCacheFile
 from utils.handle_yaml_tips.update_dict_data import update_dict_data
+from utils.db import MySqlDb
+from utils.handle_yaml_tips.analyse_yaml_data import AnalyseYamlData
+from conf.setting import setting
+from utils.db import RedisDb
 
 class BaseRequests:
     """
@@ -18,6 +21,8 @@ class BaseRequests:
     """
 
     def __init__(self, case: Dict):
+        self.mysql_db = MySqlDb()
+        self.redis_db = RedisDb()
         self.case_id = case.get('case_id')
         self.type = case.get('data').get('type')
         self.url = case.get('url')
@@ -37,16 +42,24 @@ class BaseRequests:
                 dep_type = dep_data.get('type')
                 dep_key = dep_data.get('key')
                 dep_name = dep_data.get('name')
-                cache_value = HandleCacheFile().read_cache_file(dep_name)
+                # 判断缓存使用文件还是redis
+                if setting.CACHE_TYPE == "text":
+                    cache_value = HandleCacheFile().read_cache_file(dep_name)
+                elif setting.CACHE_TYPE == "redis":
+                    cache_value = self.redis_db.get(dep_name)
+                else:
+                    raise NotFoundError(f"不支持该缓存类型:{setting.CACHE_TYPE}")
+                # 存入文件或者redis的数据有可能是字典或者其他格式变成字符串需要转换
+                try:
+                    cache_value = eval(cache_value)
+                except:
+                    cache_value = cache_value
                 if dep_type == "headers":
-                    self.headers = update_dict_data(self.headers,dep_key,cache_value)
+                    self.headers = update_dict_data(self.headers, dep_key, cache_value)
                 elif dep_type == "data":
-                    self.data = update_dict_data(self.data,dep_key,cache_value)
+                    self.data = update_dict_data(self.data, dep_key, cache_value)
                 else:
                     raise NotFoundError(f"依赖项中的type类型不支持{dep_type}")
-
-
-
 
     def post(self):
 
@@ -122,7 +135,20 @@ class BaseRequests:
             # 处理缓存信息
             if self.sava_cache:
                 hcf = HandleCacheFile()
-                hcf.save_cache_data(res,self.sava_cache)
+                hcf.save_cache_data(res, self.sava_cache)
+            # 处理后置操作
+            if self.teardown:
+                sqls = self.teardown.get('sqls')
+                tips = self.teardown.get('tips')
+                # 执行后置操作sql
+                if sqls:
+                    for sql in sqls:
+                        self.mysql_db.update_data(sql.get('sql'))
+                # 执行后置操作方法
+                if tips:
+                    for tip in tips:
+                        AnalyseYamlData.analyse_params_rules(tip.get("tip"))
+            # 断言
             assert_result = asserts_result(res.json(), self.asserts)
             return assert_result
 

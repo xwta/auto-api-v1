@@ -15,12 +15,15 @@ from utils.handle_cache_tips.handle_cache_file import HandleCacheFile
 
 class AnalyseYamlData(ReadYamlData):
 
+    setting_regular = r"\$\{\w+\}"  # 提取配置文件数据正则
+    method_regular = r"\$\{{2}[^$]+\}{2}"  # 提取方法正则
+
     def __init__(self, directory_name: str, yaml_name: str):
         super().__init__(directory_name, yaml_name)
-        self.setting_regular = r"\$\{\w+\}"  # 提取配置文件数据正则
-        self.method_regular = r"\$\{{2}[^$]+\}{2}"  # 提取方法正则
 
-    def analyse_params_rules(self, params: Union[Dict, str]) -> Union[Dict, str]:
+
+    @classmethod
+    def analyse_params_rules(cls, params: Union[Dict, str]) -> Union[Dict, str]:
         """
         提取传入的参数中的两种类型：
         ${host} ：setting配置文件中参数
@@ -29,16 +32,17 @@ class AnalyseYamlData(ReadYamlData):
         :return:
         """
         if isinstance(params, str):
-            setting_re_list = re.findall(self.setting_regular, params)
-            method_re_list = re.findall(self.method_regular, params)
-            ret_params = self.handle_str_rules(params, setting_re_list, method_re_list)
+            setting_re_list = re.findall(cls.setting_regular, params)
+            method_re_list = re.findall(cls.method_regular, params)
+            ret_params = cls.handle_str_rules(params, setting_re_list, method_re_list)
         elif isinstance(params, dict):
-            ret_params = self.search_dict_rules(params)
+            ret_params = cls.search_dict_rules(params)
         else:
             ret_params = params
         return ret_params
 
-    def analyse_setting_data(self, params: str, setting_re_list: List) -> str:
+    @classmethod
+    def analyse_setting_data(cls, params: str, setting_re_list: List) -> str:
         """
         解析配置文件中的数据
         :param params: yaml文件中对应key的值
@@ -51,7 +55,8 @@ class AnalyseYamlData(ReadYamlData):
             params = params.replace(item, item_value)
         return params
 
-    def analyse_method_data(self, params: str, method_re_list: List) -> str:
+    @classmethod
+    def analyse_method_data(cls, params: str, method_re_list: List) -> str:
         """
         解析并执行方法得到返回值并替换
         :param params: yaml文件中对应key的值
@@ -71,7 +76,8 @@ class AnalyseYamlData(ReadYamlData):
             params = params.replace(method, str(method_value))
         return params
 
-    def analyse_cache_data(self, cache_re_list: List) -> str:
+    @classmethod
+    def analyse_cache_data(cls, cache_re_list: List) -> str:
         """
         解析缓存文件名称并得到文件内容后返回
         :param cache_re_list:
@@ -82,7 +88,8 @@ class AnalyseYamlData(ReadYamlData):
         data = hcf.read_cache_file(cache_file_name)
         return data
 
-    def search_dict_rules(self, params_dict):
+    @classmethod
+    def search_dict_rules(cls, params_dict):
         """
         查找传入的dict中key对应的value中含有${host},${{add(1,2)}}执行并替换成执行后的数据，
         注意！！！
@@ -95,16 +102,17 @@ class AnalyseYamlData(ReadYamlData):
 
         for key, value in params_dict.items():
             if isinstance(value, dict):
-                self.search_dict_rules(value)
+                cls.search_dict_rules(value)
             elif isinstance(value, str):
-                setting_re_list = re.findall(self.setting_regular, value)
-                method_re_list = re.findall(self.method_regular, value)
-                new_value = self.handle_str_rules(value, setting_re_list, method_re_list)
+                setting_re_list = re.findall(cls.setting_regular, value)
+                method_re_list = re.findall(cls.method_regular, value)
+                new_value = cls.handle_str_rules(value, setting_re_list, method_re_list)
                 params_dict[key] = new_value
 
         return params_dict
 
-    def handle_str_rules(self, params: str, setting_re_list: List, method_re_list: List) -> str:
+    @classmethod
+    def handle_str_rules(cls, params: str, setting_re_list: List, method_re_list: List) -> str:
         """
         处理字符串中含有的${host},${{add(1,2)}}配置
         :param params:
@@ -114,17 +122,17 @@ class AnalyseYamlData(ReadYamlData):
         """
         if setting_re_list != [] and method_re_list != []:
             # 解析配置文件中的数据并替换
-            ret_params = self.analyse_setting_data(params, setting_re_list)
+            ret_params = cls.analyse_setting_data(params, setting_re_list)
             # 判断cacheOrMethod_re中的值是否存在英文(),存在则执行调用方法，否则抛出异常
             if "(" in method_re_list[0] and ")" in method_re_list[0]:
-                ret_params = self.analyse_method_data(ret_params, method_re_list)
+                ret_params = cls.analyse_method_data(ret_params, method_re_list)
             else:
                 raise NotAllowCacheError("此项不能使用cache！")
         elif setting_re_list != [] and method_re_list == []:
-            ret_params = self.analyse_setting_data(params, setting_re_list)
+            ret_params = cls.analyse_setting_data(params, setting_re_list)
         elif setting_re_list == [] and method_re_list != []:
             if "(" in method_re_list[0] and ")" in method_re_list[0]:
-                ret_params = self.analyse_method_data(params, method_re_list)
+                ret_params = cls.analyse_method_data(params, method_re_list)
             else:
                 raise NotAllowCacheError("此项不能使用cache配置项读取内容！")
         else:
@@ -304,15 +312,6 @@ class AnalyseYamlData(ReadYamlData):
         """
         key_value = case_data.get("teardown")
         if key_value is not None:
-            tips = key_value.get("tips")
-            new_tips_list = []
-            # 执行tip中方法，返回值只表示成功执行，后续不会使用
-            for tip in tips:
-                temp_tip_dict = {}
-                data = self.analyse_params_rules(tip.get("tip"))
-                temp_tip_dict["tip"] = data
-                new_tips_list.append(temp_tip_dict)
-            key_value["tips"] = new_tips_list
             return key_value
         else:
             return False

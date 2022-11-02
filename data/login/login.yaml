@@ -58,8 +58,7 @@ case_xxx_01:
   #用例执行完、后置清理数据操作
   teardown:
     sqls:
-      - sql: xxxxxx
-      - sql: xxxxxx
+      - sql: update user set username='yxy111' where username='yxy'
     tips:
       - tip: ${{add(1,3)}}
       - tip: ${{add(2,9)}}

@@ -4,19 +4,18 @@
 # @File   : setting.py
 
 import os
+from typing import Dict
 
 
 class Setting:
-
     host = "gw.7881.com"  # ip+port或者域名
     HTTP_TYPE = "https"
     DIR = os.path.dirname(os.path.dirname(__file__))
-    DATA_FILE_PATH = DIR + "/data/"   # yaml存放路径
-    CASE_FILE_PATH = DIR + "/case/"   # case存放路径
+    DATA_FILE_PATH = DIR + "/data/"  # yaml存放路径
+    CASE_FILE_PATH = DIR + "/case/"  # case存放路径
     CACHE_FILE_PATH = DIR + "/cache/"  # cache缓存文件存放路径
     CONF_FILE_PATH = DIR + "/conf/"  # 配置文件存放路径
     DEPS_NAME = "conf.deps"  # 自定义方法的py文件路径
-
 
     YAML_CASE_STARTSWITH = "case"  # yaml文件中用例序号默认以case开头格式
     GLOBAL_ENCODING: str = 'utf-8'  # 全局编码
@@ -29,11 +28,12 @@ class Setting:
 
     DING_ACCESS_TOKEN: str = "0d93133665496298c235f9e7568c7ff175786eef5bff0183bd99dbf03f947323"  # 钉钉群access_token
     MESSAGE_SWITCH = False  # 发送钉钉或者企业微信、邮件等开关
+    CACHE_TYPE: str = "redis"    # 缓存存储类型，默认以文本形式存储和读取，改成redis时，以redis存储和读取
+
+    MYSQL_DB: Dict = {"host": "110.40.174.71", "port": 3306, "database": "zwx", "user": "root", "passwd": "123456",
+                      "charset": "utf8"}
+    REDIS_DB: Dict = {"host": "110.40.174.71", "port": 6379, "password": "000415", "db": 0}
 
 
 
-
-
-
-
-setting =Setting()
+setting = Setting()
