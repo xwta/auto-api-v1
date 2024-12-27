@@ -1,0 +1,37 @@
+{
+  "uid" : "ab17fc5a4eb3bca4b216b548c7f9fcbc",
+  "name" : "timeline",
+  "children" : [ {
+    "name" : "sexuehandeMacBook-Pro.local",
+    "children" : [ {
+      "name" : "3018-MainThread",
+      "children" : [ {
+        "name" : "test_login[验证账号密码正确，登录成功]",
+        "uid" : "cb1bc1350b4db08d",
+        "parentUid" : "77401ac24b7ca3822b735baad78ee203",
+        "status" : "passed",
+        "time" : {
+          "start" : 1716343814368,
+          "stop" : 1716343815309,
+          "duration" : 941
+        },
+        "flaky" : false,
+        "parameters" : [ "{'case_id': 'case_login_01', 'url': 'http://192.168.31.246:8080/nbcio-boot/sys/login', 'method': 'POST', 'title': '验证账号密码正确，登录成功', 'headers': {'content-type': 'application/json', 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36'}, 'data': {'type': 'json', 'values': {'username': 'admin', 'password': '123456', 'captcha': '3ejh', 'checkKey': 1716172800254, 'remember_me': True}}, 'is_run': None, 'sava_cache': [{'type': 'response', 'jsonpath': '$.result.token', 'name': '${{token}}'}], 'dependent_data': False, 'asserts': {'rules': [{'jsonpath': '$.success', 'type': '==', 'value': True}]}, 'teardown': False}" ]
+      }, {
+        "name" : "test_referenceStandards[验证新增参考标准成功]",
+        "uid" : "ebaea7c7c274a9a",
+        "parentUid" : "77401ac24b7ca3822b735baad78ee203",
+        "status" : "passed",
+        "time" : {
+          "start" : 1716343815312,
+          "stop" : 1716343815473,
+          "duration" : 161
+        },
+        "flaky" : false,
+        "parameters" : [ "{'case_id': 'case_rs_01', 'url': 'http://192.168.31.246:8080/nbcio-boot/baseDataPreserve/referenceStandardSave', 'method': 'POST', 'title': '验证新增参考标准成功', 'headers': {'content-type': 'application/json', 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36', 'X-Access-Token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTYzNDU4NDEsInVzZXJuYW1lIjoiYWRtaW4ifQ.cEzzNhinmIpXcBsYVPnqg90JBSfVLGBCmf0lqSvZwp0'}, 'data': {'type': 'json', 'values': {'content': '111', 'referenceStandardCode': 'GB123', 'standardName': '执行标准'}}, 'is_run': None, 'sava_cache': False, 'dependent_data': False, 'asserts': {'rules': [{'jsonpath': '$.success', 'type': '==', 'value': True}]}, 'teardown': False}" ]
+      } ],
+      "uid" : "77401ac24b7ca3822b735baad78ee203"
+    } ],
+    "uid" : "163beb675444727241cba4cbf99dc30b"
+  } ]
+}

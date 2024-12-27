@@ -1,0 +1,3 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Wed May 22 10:10:14 CST 2024","Wed May 22 10:10:15 CST 2024","941","case.login","test_login","","","","test_login[验证账号密码正确，登录成功]",""
+"passed","Wed May 22 10:10:15 CST 2024","Wed May 22 10:10:15 CST 2024","161","case.referenceStandards","test_referenceStandards","","","","test_referenceStandards[验证新增参考标准成功]",""

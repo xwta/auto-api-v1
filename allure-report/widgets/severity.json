@@ -1,0 +1,21 @@
+[ {
+  "uid" : "cb1bc1350b4db08d",
+  "name" : "test_login[验证账号密码正确，登录成功]",
+  "time" : {
+    "start" : 1716343814368,
+    "stop" : 1716343815309,
+    "duration" : 941
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "ebaea7c7c274a9a",
+  "name" : "test_referenceStandards[验证新增参考标准成功]",
+  "time" : {
+    "start" : 1716343815312,
+    "stop" : 1716343815473,
+    "duration" : 161
+  },
+  "status" : "passed",
+  "severity" : "normal"
+} ]

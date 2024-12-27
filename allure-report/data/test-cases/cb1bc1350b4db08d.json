@@ -1,0 +1,64 @@
+{
+  "uid" : "cb1bc1350b4db08d",
+  "name" : "test_login[验证账号密码正确，登录成功]",
+  "fullName" : "case.login.test_login#test_login",
+  "historyId" : "4daed9e7980eaf636a279aed2fa5c342",
+  "time" : {
+    "start" : 1716343814368,
+    "stop" : 1716343815309,
+    "duration" : 941
+  },
+  "status" : "passed",
+  "flaky" : false,
+  "beforeStages" : [ ],
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "feature",
+    "value" : "登录"
+  }, {
+    "name" : "epic",
+    "value" : "电气项目"
+  }, {
+    "name" : "story",
+    "value" : "登录接口"
+  }, {
+    "name" : "parentSuite",
+    "value" : "case.login"
+  }, {
+    "name" : "suite",
+    "value" : "test_login"
+  }, {
+    "name" : "host",
+    "value" : "sexuehandeMacBook-Pro.local"
+  }, {
+    "name" : "thread",
+    "value" : "3018-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "case.login.test_login"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ {
+    "name" : "case",
+    "value" : "{'case_id': 'case_login_01', 'url': 'http://192.168.31.246:8080/nbcio-boot/sys/login', 'method': 'POST', 'title': '验证账号密码正确，登录成功', 'headers': {'content-type': 'application/json', 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36'}, 'data': {'type': 'json', 'values': {'username': 'admin', 'password': '123456', 'captcha': '3ejh', 'checkKey': 1716172800254, 'remember_me': True}}, 'is_run': None, 'sava_cache': [{'type': 'response', 'jsonpath': '$.result.token', 'name': '${{token}}'}], 'dependent_data': False, 'asserts': {'rules': [{'jsonpath': '$.success', 'type': '==', 'value': True}]}, 'teardown': False}"
+  } ],
+  "links" : [ ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "cb1bc1350b4db08d.json",
+  "parameterValues" : [ "{'case_id': 'case_login_01', 'url': 'http://192.168.31.246:8080/nbcio-boot/sys/login', 'method': 'POST', 'title': '验证账号密码正确，登录成功', 'headers': {'content-type': 'application/json', 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36'}, 'data': {'type': 'json', 'values': {'username': 'admin', 'password': '123456', 'captcha': '3ejh', 'checkKey': 1716172800254, 'remember_me': True}}, 'is_run': None, 'sava_cache': [{'type': 'response', 'jsonpath': '$.result.token', 'name': '${{token}}'}], 'dependent_data': False, 'asserts': {'rules': [{'jsonpath': '$.success', 'type': '==', 'value': True}]}, 'teardown': False}" ]
+}

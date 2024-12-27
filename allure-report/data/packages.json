@@ -1,0 +1,41 @@
+{
+  "uid" : "83edc06c07f9ae9e47eb6dd1b683e4e2",
+  "name" : "packages",
+  "children" : [ {
+    "name" : "case",
+    "children" : [ {
+      "name" : "login.test_login",
+      "children" : [ {
+        "name" : "test_login[验证账号密码正确，登录成功]",
+        "uid" : "cb1bc1350b4db08d",
+        "parentUid" : "d18b7a4056f6f23a1d597c1f6ffae92d",
+        "status" : "passed",
+        "time" : {
+          "start" : 1716343814368,
+          "stop" : 1716343815309,
+          "duration" : 941
+        },
+        "flaky" : false,
+        "parameters" : [ "{'case_id': 'case_login_01', 'url': 'http://192.168.31.246:8080/nbcio-boot/sys/login', 'method': 'POST', 'title': '验证账号密码正确，登录成功', 'headers': {'content-type': 'application/json', 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36'}, 'data': {'type': 'json', 'values': {'username': 'admin', 'password': '123456', 'captcha': '3ejh', 'checkKey': 1716172800254, 'remember_me': True}}, 'is_run': None, 'sava_cache': [{'type': 'response', 'jsonpath': '$.result.token', 'name': '${{token}}'}], 'dependent_data': False, 'asserts': {'rules': [{'jsonpath': '$.success', 'type': '==', 'value': True}]}, 'teardown': False}" ]
+      } ],
+      "uid" : "login.test_login"
+    }, {
+      "name" : "referenceStandards.test_referenceStandards",
+      "children" : [ {
+        "name" : "test_referenceStandards[验证新增参考标准成功]",
+        "uid" : "ebaea7c7c274a9a",
+        "parentUid" : "adbc10f53c25a5c2ef7be42b688fbda4",
+        "status" : "passed",
+        "time" : {
+          "start" : 1716343815312,
+          "stop" : 1716343815473,
+          "duration" : 161
+        },
+        "flaky" : false,
+        "parameters" : [ "{'case_id': 'case_rs_01', 'url': 'http://192.168.31.246:8080/nbcio-boot/baseDataPreserve/referenceStandardSave', 'method': 'POST', 'title': '验证新增参考标准成功', 'headers': {'content-type': 'application/json', 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36', 'X-Access-Token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTYzNDU4NDEsInVzZXJuYW1lIjoiYWRtaW4ifQ.cEzzNhinmIpXcBsYVPnqg90JBSfVLGBCmf0lqSvZwp0'}, 'data': {'type': 'json', 'values': {'content': '111', 'referenceStandardCode': 'GB123', 'standardName': '执行标准'}}, 'is_run': None, 'sava_cache': False, 'dependent_data': False, 'asserts': {'rules': [{'jsonpath': '$.success', 'type': '==', 'value': True}]}, 'teardown': False}" ]
+      } ],
+      "uid" : "referenceStandards.test_referenceStandards"
+    } ],
+    "uid" : "3a5ff917f72cbd03b2a2ff2549394ef0"
+  } ]
+}
