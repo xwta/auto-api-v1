@@ -46,9 +46,6 @@ def asserts_result(data: Dict,asserts: Dict):
     else:
         raise NotCaseKeyError("断言数据中无rules规则数据")
 
-# asserts = {'is_full_assert': False, 'rules': [{'jsonpath': '$.code', 'type': '==', 'value': 200}, {'jsonpath': '$.code', 'type': '!=', 'value': 201}]}
-# data = {"code":200,"name":"zwx"}
-# res = asserts_result(data,asserts)
 
 
 

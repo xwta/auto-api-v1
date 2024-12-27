@@ -23,7 +23,7 @@ class CreateCaseFile:
             raise Exception(f"{self.directory_name}目录下的{self.case_name}文件已存在！")
 
     def create_case_file(self):
-        case_template=f"""
+        case_template = f"""
 # coding=utf-8
 import pytest
 import allure
@@ -53,10 +53,10 @@ if __name__ == '__main__':
     pytest.main(["-s","-q","test_{self.case_name}.py"])       
         
         """
-        with open(self.case_file_path,"w",encoding=setting.GLOBAL_ENCODING) as f:
+        with open(self.case_file_path, "w", encoding=setting.GLOBAL_ENCODING) as f:
             f.write(case_template)
 
 
 if __name__ == '__main__':
-    ccf = CreateCaseFile('login','login')
+    ccf = CreateCaseFile('referenceStandards', 'referenceStandards')
     ccf.create_case_file()

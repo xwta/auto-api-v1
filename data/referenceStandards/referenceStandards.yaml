@@ -1,0 +1,95 @@
+allure_params:
+  allureEpic: "电气项目"
+  allureFeature: "参考标准管理"
+  allureStory: "参考标准管理接口"
+
+case_rs_01:
+  - step: 1
+    host: ${host}
+    url: /nbcio-boot/baseDataPreserve/referenceStandardSave
+    method: POST
+    title: 验证新增参考标准成功
+    headers:
+      content-type: application/json
+      User-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36
+      X-Access-Token: ${{token}}
+    data:
+      type: json
+      values: {
+        "content": "111",
+        "referenceStandardCode": "GB123",
+        "standardName": "执行标准"
+      }
+    is_run:
+    asserts:
+      rules:
+        - jsonpath: $.success
+          type: ==
+          value: true
+  - step: 2
+    host: ${host}
+    url: /nbcio-boot/baseDataPreserve/referenceStandardSave
+    method: POST
+    title: 验证新增参考标准成功
+    headers:
+      content-type: application/json
+      User-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36
+      X-Access-Token: ${{token}}
+    data:
+      type: json
+      values: {
+        "content": "111",
+        "referenceStandardCode": "GB123",
+        "standardName": "执行标准"
+      }
+    is_run:
+    asserts:
+      rules:
+        - jsonpath: $.success
+          type: ==
+          value: true
+case_rs_02:
+  - step: 1
+    host: ${host}
+    url: /nbcio-boot/baseDataPreserve/referenceStandardSave
+    method: POST
+    title: 验证新增参考标准成功
+    headers:
+      content-type: application/json
+      User-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36
+      X-Access-Token: ${{token}}
+    data:
+      type: json
+      values: {
+        "content": "111",
+        "referenceStandardCode": "GB123",
+        "standardName": "执行标准"
+      }
+    is_run:
+    asserts:
+      rules:
+        - jsonpath: $.success
+          type: ==
+          value: true
+  - step: 2
+    host: ${host}
+    url: /nbcio-boot/baseDataPreserve/referenceStandardSave
+    method: POST
+    title: 验证新增参考标准成功
+    headers:
+      content-type: application/json
+      User-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36
+      X-Access-Token: ${{token}}
+    data:
+      type: json
+      values: {
+        "content": "111",
+        "referenceStandardCode": "GB123",
+        "standardName": "执行标准"
+      }
+    is_run:
+    asserts:
+      rules:
+        - jsonpath: $.success
+          type: ==
+          value: true

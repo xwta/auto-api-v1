@@ -15,14 +15,11 @@ def update_dict_data(data: Dict, k, val):
     :return:
     """
 
-    for key,value in data.items():
+    for key, value in data.items():
         if k == key:
-            data[k]=val
+            data[k] = val
             return data
         else:
-            if isinstance(value,dict):
-                update_dict_data(value,k,val)
+            if isinstance(value, dict):
+                update_dict_data(value, k, val)
     return data
-
-
-

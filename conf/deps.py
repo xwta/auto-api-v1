@@ -9,9 +9,4 @@
 !!!
 注意，如果方法有参数时，传入的参数都是字符串，是数字的话，需要函数内部自己转换
 """
-
-
-def add(a,b=3):
-    a=int(a)
-    b=int(b)
-    return a+b
+from utils.common import main

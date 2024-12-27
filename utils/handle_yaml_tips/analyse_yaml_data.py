@@ -11,16 +11,15 @@ from utils.handle_yaml_tips.get_setting_data import get_setting_data
 from utils.handle_yaml_tips.call_deps_method import call_deps_method
 import re
 from utils.handle_cache_tips.handle_cache_file import HandleCacheFile
+from utils.handle_yaml_tips.update_dict_data import update_dict_data
 
 
 class AnalyseYamlData(ReadYamlData):
-
     setting_regular = r"\$\{\w+\}"  # 提取配置文件数据正则
     method_regular = r"\$\{{2}[^$]+\}{2}"  # 提取方法正则
 
     def __init__(self, directory_name: str, yaml_name: str):
         super().__init__(directory_name, yaml_name)
-
 
     @classmethod
     def analyse_params_rules(cls, params: Union[Dict, str]) -> Union[Dict, str]:
@@ -77,13 +76,12 @@ class AnalyseYamlData(ReadYamlData):
         return params
 
     @classmethod
-    def analyse_cache_data(cls, cache_re_list: List) -> str:
+    def analyse_cache_data(cls, cache_file_name) -> str:
         """
         解析缓存文件名称并得到文件内容后返回
         :param cache_re_list:
         :return:
         """
-        cache_file_name = cache_re_list[0]
         hcf = HandleCacheFile()
         data = hcf.read_cache_file(cache_file_name)
         return data
@@ -206,6 +204,12 @@ class AnalyseYamlData(ReadYamlData):
         """
         key_value = case_data.get("headers")
         if key_value is not None:
+            for key, value in key_value.items():
+                if isinstance(value, str):
+                    if value.startswith("${{"):
+                        new_value = AnalyseYamlData.analyse_cache_data(value)
+                        result = update_dict_data(key_value, key, new_value)
+                        return result
             return key_value
         else:
             raise NotCaseKeyError(f"用例{case_id},缺少headers关键字key！")
@@ -326,27 +330,31 @@ class AnalyseYamlData(ReadYamlData):
         for case_id in all_keys:
             # 默认以“case”开头的用例名称才匹配
             if case_id.startswith(setting.YAML_CASE_STARTSWITH):
-                case_data = yaml_data[case_id]
-                case_info = {
-                    "case_id": case_id,
-                    "url": self.get_url(case_id, case_data),
-                    "method": self.get_method(case_id, case_data),
-                    "title": self.get_title(case_id, case_data),
-                    "headers": self.get_headers(case_id, case_data),
-                    "data": self.get_data(case_id, case_data),
-                    "is_run": self.get_is_run(case_id, case_data),
-                    "sava_cache": self.get_save_cache(case_id, case_data),
-                    "dependent_data": self.get_dependent_data(case_id, case_data),
-                    "asserts": self.get_asserts(case_id, case_data),
-                    "teardown": self.get_teardown(case_data)
-                }
-                case_list.append(case_info)
-                case_title.append(case_info['title'])
+                case_data_list = yaml_data[case_id]
+                case_info_list = []
+                for case_data in case_data_list:
+                    temp_case_info = {
+                        "case_id": case_id,
+                        "url": self.get_url(case_id, case_data),
+                        "method": self.get_method(case_id, case_data),
+                        "title": self.get_title(case_id, case_data),
+                        "headers": self.get_headers(case_id, case_data),
+                        "data": self.get_data(case_id, case_data),
+                        "is_run": self.get_is_run(case_id, case_data),
+                        "sava_cache": self.get_save_cache(case_id, case_data),
+                        "dependent_data": self.get_dependent_data(case_id, case_data),
+                        "asserts": self.get_asserts(case_id, case_data),
+                        "teardown": self.get_teardown(case_data)
+                    }
+                    case_info_list.append(temp_case_info)
+                case_list.append(case_info_list)
+                case_title.append(case_info_list[0]['title'])
         return allure_params, case_title, case_list
 
 
 if __name__ == '__main__':
-    ayd = AnalyseYamlData('login', 'login')
-    # name="/${{add(7,3)}}/xxx/${host},${DEPS_NAME},sad/${{add(2,3)}}"
-    data = ayd.analyse_yaml_data()
-    print(data[2][0])
+    ayd = AnalyseYamlData('referenceStandards', 'referenceStandards')
+    allure_params, case_title, case_list = ayd.analyse_yaml_data()
+    print(allure_params)
+    print(case_title)
+    print(case_list)

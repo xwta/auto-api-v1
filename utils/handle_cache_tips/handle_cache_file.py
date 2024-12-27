@@ -10,6 +10,7 @@ from utils.exceptions import *
 from utils.logger import logger
 from utils.db import RedisDb
 
+
 class HandleCacheFile:
     """处理缓存文件数据"""
 
@@ -53,11 +54,10 @@ class HandleCacheFile:
                     logger.info(f"缓存文件名称:{name},保存值为:{result}")
                 elif setting.CACHE_TYPE == "redis":
                     db = RedisDb()
-                    db.set(name,str(result))
+                    db.set(name, str(result))
                     logger.info(f"redis key:{name},value:{result}")
                 else:
                     raise NotFoundError(f"不支持该缓存类型:{setting.CACHE_TYPE}")
-
 
 
 if __name__ == '__main__':

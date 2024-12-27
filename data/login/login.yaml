@@ -1,64 +1,38 @@
 
 #allure基础信息配置
 allure_params:
-  allureEpic: "项目名称描述"
-  allureFeature: "功能点描述（模块名称）"
-  allureStory: "接口名称"
+  allureEpic: "电气项目"
+  allureFeature: "登录"
+  allureStory: "登录接口"
 
-case_xxx_01:
-  #${xxx}表示从配置文件中获取值，${{xxx()}}表示从deps文件中调用方法，${{xxx}}表示缓存存取文件名
-  host: ${host}
-  url: /user-service-api/api/personal/base-info
-  method: GET
-  title: 验证账号密码正确，登录成功
-  headers:
-    content-type: application/json
-    User-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36
-    Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1XzE1NDUyNjkwNjg0MjQiLCJ1c2VySWQiOjEyMDY0MzAyMywibmlja05hbWUiOiIxNTMqKioqNTY3OCIsImltYWdlVXJsIjoiaHR0cHM6Ly91c2VycGljLjc4ODEuY29tL3RlbXBvcmFyeS9nb29kcy8xMjM0NTYvMWNkYzlkODRlMGVlNDkxNGJkMTkyOTcwOTVhNjBkMGYuanBnP3gtb3NzLXByb2Nlc3M9c3R5bGUvbm9ybWFsIiwicGhvbmUiOiIxNTMxMjM0NTY3OCIsInB3ZFVwZGF0ZVRpbWUiOiIyMDE5LTAxLTE4IDEwOjU0OjQwIiwibGFzdExvZ2luVGltZSI6IjIwMjItMTAtMTEgMTU6MDI6NTYiLCJyZW1lbWJlck1lIjpmYWxzZSwic3lzdGVtVmVyc2lvbiI6IjEiLCJwbGF0Zm9ybSI6Ijc4ODEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiZXhwIjoxNjY2MDc2NTc2fQ.fFseUPKngkce2YNdtHfJltCG3TRKAs5jSPyWPlTKiSY
-  #请求参数分为4种类型，values根据类型传入不同的参数
-  data:
-    type: params
-    values: {"code":2,"addr":"beijing"}
-  #空、true默认执行，false不执行该用例
-  is_run:
-  #是否在接口返回值存入缓存中，type: redis | text ，放入配置文件中，总的来控制是使用文本还是redis存缓存数据
-  sava_cache:
-    is_cache: true #如果不写此项、为空、false，则认为不开启
-    #可能存在多个需要存的值
-    rules:
-      - type: response
-        jsonpath: $.code  # 采用jsonpath提取值
-        name: ${{code}}
-      - type: headers
-        jsonpath: $.content-type  # 采用jsonpath提取值
-        name: ${{content-type}}
-  #是否需要依赖数据
-  dependent_data:
-    is_dependent: true #如果不写此项、为空、false，则认为不需要
-    rules:
-      - type: data
-        key: code
-        name: ${{code}}
-      - type: data
-        key: addr
-        name: ${{code}}
-      - type: headers
-        key: content-type
-        name: ${{content-type}}
-  #断言，可以存在多个
-  asserts:
-    is_full_assert: false  #是否全量断言，只有写了此关键字并设置true才开启，其他默认不开启走具体返回值断言
-    rules:
-      - jsonpath: $.code
-        type: ==
-        value: 0   #预期结果
-      - jsonpath: $.successful
-        type: ==
-        value: true   #预期结果
-  #用例执行完、后置清理数据操作
-  teardown:
-    sqls:
-      - sql: update user set username='yxy111' where username='yxy'
-    tips:
-      - tip: ${{add(1,3)}}
-      - tip: ${{add(2,9)}}
+case_login_01:
+  - step: 1
+    #${xxx}表示从配置文件中获取值，${{xxx()}}表示从deps文件中调用方法，${{xxx}}表示缓存存取文件名
+    host: ${host}
+    url: /nbcio-boot/sys/login
+    method: POST
+    title: 验证账号密码正确，登录成功
+    headers:
+      content-type: application/json
+      User-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36
+    #请求参数分为4种类型，values根据类型传入不同的参数
+    data:
+      type: json
+      values: {"username": "admin", "password": "123456", "captcha": "${{main()}}", "checkKey": 1716172800254,
+              "remember_me": True}
+    #空、true默认执行，false不执行该用例
+    is_run:
+    #是否在接口返回值存入缓存中，type: redis | text ，放入配置文件中，总的来控制是使用文本还是redis存缓存数据
+    sava_cache:
+      is_cache: true #如果不写此项、为空、false，则认为不开启
+      #可能存在多个需要存的值
+      rules:
+        - type: response
+          jsonpath: $.result.token  # 采用jsonpath提取值
+          name: ${{token}}
+    #断言，可以存在多个
+    asserts:
+      rules:
+        - jsonpath: $.success
+          type: ==
+          value: true   #预期结果
